@@ -123,12 +123,12 @@ namespace DonateDataController.Controllers
                                 detail.Name = dataReader["DonatorName"].ToString();
                                 detail.SurName = dataReader["DonatorSurName"].ToString();
                                 detail.Telephone = dataReader["Telephone"].ToString();
-                                detail.Addr1 = GetAddrRow1(dataReader["HouseNumber"].ToString(),
+                                detail.Addr1 = Ulib.GetAddrRow1(dataReader["HouseNumber"].ToString(),
                                                            dataReader["Moo"].ToString(),
                                                            dataReader["Building"].ToString(),
                                                            dataReader["Soi"].ToString(),
                                                            dataReader["Road"].ToString());
-                                detail.Addr2 = GetAddrRow2(dataReader["Tambon"].ToString(),
+                                detail.Addr2 = Ulib.GetAddrRow2(dataReader["Tambon"].ToString(),
                                                            dataReader["Amphur"].ToString(),
                                                            dataReader["Province"].ToString(),
                                                            dataReader["Zipcode"].ToString());
@@ -276,12 +276,12 @@ namespace DonateDataController.Controllers
                                 detail.Name = dataReader["DonatorName"].ToString();
                                 detail.SurName = dataReader["DonatorSurName"].ToString();
                                 detail.Telephone = dataReader["Telephone"].ToString();
-                                detail.Addr1 = GetAddrRow1(dataReader["HouseNumber"].ToString(),
+                                detail.Addr1 = Ulib.GetAddrRow1(dataReader["HouseNumber"].ToString(),
                                                            dataReader["Moo"].ToString(),
                                                            dataReader["Building"].ToString(),
                                                            dataReader["Soi"].ToString(),
                                                            dataReader["Road"].ToString());
-                                detail.Addr2 = GetAddrRow2(dataReader["Tambon"].ToString(),
+                                detail.Addr2 = Ulib.GetAddrRow2(dataReader["Tambon"].ToString(),
                                                            dataReader["Amphur"].ToString(),
                                                            dataReader["Province"].ToString(),
                                                            dataReader["Zipcode"].ToString());                                
@@ -361,40 +361,6 @@ namespace DonateDataController.Controllers
             if (!string.IsNullOrEmpty(result.ErrorMessage))
                 return BadRequest(result.ErrorMessage);
             return Json(result);
-        }
-        private string GetAddrRow1(string HouseNumber, string Moo, string Building, string Soi, string Road)
-        {
-            string result = "";
-            if (!string.IsNullOrEmpty(HouseNumber))
-                result = "เลขที่ " + HouseNumber;
-            if (!string.IsNullOrEmpty(Moo))
-                result = result + " หมู่ที่ " + Moo;
-            if (!string.IsNullOrEmpty(Building))
-                result = result + " อาคาร " + Building;
-            if (!string.IsNullOrEmpty(Soi))
-                result = result + " ซอย " + Soi;
-            if (!string.IsNullOrEmpty(Road))
-                result = result + " ถนน " + Road;
-            return result.Trim();
-        }
-        private string GetAddrRow2(string Tambon, string Amphur, string Province, string Zipcode)
-        {
-            string result = "";
-            if (!string.IsNullOrEmpty(Tambon))
-                if (Province.Contains("กรุงเทพ") || Province.Contains("กทม"))
-                    result = result + " แขวง " + Tambon;
-                else
-                    result = result + " ตำบล " + Tambon;
-            if (!string.IsNullOrEmpty(Amphur))
-                if (Province.Contains("กรุงเทพ") || Province.Contains("กทม"))
-                    result = "เขต " + Amphur;
-                else
-                    result = "อำเภอ " + Amphur;
-            if (!string.IsNullOrEmpty(Province))
-                result = result + " จังหวัด " + Province;
-            if (!string.IsNullOrEmpty(Zipcode))
-                result = result + " " + Zipcode;
-            return result.Trim();
         }
         private MasterData GetMasterData()
         {

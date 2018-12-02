@@ -7,6 +7,7 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using MySql.Data.MySqlClient;
 using UtilityControllers.Models;
+using UtilityLib;
 
 namespace DonateDataController.Controllers
 {
@@ -18,6 +19,7 @@ namespace DonateDataController.Controllers
         [HttpGet]
         public IHttpActionResult GetMasterData()
         {
+            UtilLibs uLibs = new UtilLibs();
             List<MasterData> result = new List<MasterData>();
             DBConnector.DBConnector conn = new DBConnector.DBConnector();
             string SQLString;
@@ -46,11 +48,33 @@ namespace DonateDataController.Controllers
                             Zipcode = dataReader["zipcode"].ToString(),
                             Telephone = dataReader["telephone"].ToString(),
                             Slogan = dataReader["Slogan"].ToString(),
-                            TaxID = dataReader["TaxID"].ToString()
-                        });
+                            TaxID = dataReader["TaxID"].ToString(),
+                            Blank1 = dataReader["Blank1"].ToString(),
+                            Blank2 = dataReader["Blank2"].ToString(),
+                            Blank3 = dataReader["Blank3"].ToString(),
+                            Blank4 = dataReader["Blank4"].ToString(),
+                            Blank5 = dataReader["Blank5"].ToString(),
+                            Blank6 = dataReader["Blank6"].ToString(),
+                            Fax = dataReader["Fax"].ToString(),
+                            PartyNameLocation = dataReader["PartyNameLocation"].ToString(),
+                            RegisterNo = dataReader["RegisterNo"].ToString(),
+                            CorporateNo = dataReader["CorporateNo"].ToString(),
+                            CitizenID = dataReader["CitizenID"].ToString(),
+                            PartyAddr1 = uLibs.GetAddrRow1(dataReader["HouseNumber"].ToString(),
+                                                           dataReader["Moo"].ToString(),
+                                                           dataReader["Building"].ToString(),
+                                                           dataReader["Soi"].ToString(),
+                                                           dataReader["Road"].ToString()),
+                            PartyAddr2 = uLibs.GetAddrRow2(dataReader["Tambon"].ToString(),
+                                                           dataReader["Amphur"].ToString(),
+                                                           dataReader["Province"].ToString(),
+                                                           dataReader["Zipcode"].ToString())
+                    });
                     }
                     return Json(result);
-
+                    /*      public string PartyAddr1 { get; set; }
+                            public string PartyAddr2 { get; set; }                            
+                            */
                 }
                 catch (Exception e)
                 {
