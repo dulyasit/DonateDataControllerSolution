@@ -24,13 +24,25 @@ namespace DonateDataController.Controllers
             {
                 try
                 {
-                    SQLString = @"insert into prename (PreName) values (@PreName) ";
+                    SQLString = @"INSERT INTO prename (PreNameID, PreName, PersonFlag, CorporateFlag,
+                                  Blank1, Blank2, Blank3, Blank4, Blank5, Blank6)
+                                  VALUES (@PreNameID, @PreName, @PersonFlag, @CorporateFlag,
+                                  @Blank1, @Blank2, @Blank3, @Blank4, @Blank5, @Blank6);";
                     MySqlCommand qExe = new MySqlCommand
                     {
                         Connection = conn.connection,
                         CommandText = SQLString
                     };
+                    qExe.Parameters.AddWithValue("@PreNameID", item.PreNameID);
                     qExe.Parameters.AddWithValue("@PreName", item.PreName);
+                    qExe.Parameters.AddWithValue("@PersonFlag", item.PersonFlag);
+                    qExe.Parameters.AddWithValue("@CorporateFlag", item.CorporateFlag);
+                    qExe.Parameters.AddWithValue("@Blank1", item.Blank1);
+                    qExe.Parameters.AddWithValue("@Blank2", item.Blank2);
+                    qExe.Parameters.AddWithValue("@Blank3", item.Blank3);
+                    qExe.Parameters.AddWithValue("@Blank4", item.Blank4);
+                    qExe.Parameters.AddWithValue("@Blank5", item.Blank5);
+                    qExe.Parameters.AddWithValue("@Blank6", item.Blank6);
                     qExe.ExecuteNonQuery();
                     long returnid = qExe.LastInsertedId;
                     conn.CloseConnection();
@@ -57,14 +69,25 @@ namespace DonateDataController.Controllers
             {
                 try
                 {
-                    SQLString = @"UPDATE prename SET PreName = @PreName WHERE PreNameRunno = @PreNameRunno";
+                    SQLString = @"UPDATE prename SET PreNameID = @PreNameID, PreName = @PreName,
+                                  PersonFlag = @PersonFlag, CorporateFlag = @CorporateFlag, Blank1 = @Blank1,
+                                  Blank2 = @Blank2, Blank3 = @Blank3, Blank4 = @Blank4, Blank5 = @Blank5,
+                                  Blank6 = @Blank6 WHERE PreNameID = @PreNameID;";
                     MySqlCommand qExe = new MySqlCommand
                     {
                         Connection = conn.connection,
                         CommandText = SQLString
                     };
-                    qExe.Parameters.AddWithValue("@PreNameRunno", item.PreNameRunno);
+                    qExe.Parameters.AddWithValue("@PreNameID", item.PreNameID);
                     qExe.Parameters.AddWithValue("@PreName", item.PreName);
+                    qExe.Parameters.AddWithValue("@PersonFlag", item.PersonFlag);
+                    qExe.Parameters.AddWithValue("@CorporateFlag", item.CorporateFlag);
+                    qExe.Parameters.AddWithValue("@Blank1", item.Blank1);
+                    qExe.Parameters.AddWithValue("@Blank2", item.Blank2);
+                    qExe.Parameters.AddWithValue("@Blank3", item.Blank3);
+                    qExe.Parameters.AddWithValue("@Blank4", item.Blank4);
+                    qExe.Parameters.AddWithValue("@Blank5", item.Blank5);
+                    qExe.Parameters.AddWithValue("@Blank6", item.Blank6);
                     qExe.ExecuteNonQuery();
                     conn.CloseConnection();
                     return Json(new ResultDataModel { success = true, errorMessage = "", returnRunno = "" });
@@ -89,7 +112,7 @@ namespace DonateDataController.Controllers
             {
                 try
                 {
-                    string sqlString = @"delete from prename where PreNameRunno = @PreNameRunno";
+                    string sqlString = @"delete from prename where PreNameID = @PreNameID";
                     MySqlCommand qExe = new MySqlCommand
                     {
                         Connection = conn.connection,
@@ -97,7 +120,7 @@ namespace DonateDataController.Controllers
                     };
                     if (string.IsNullOrEmpty(id))
                         return Json(new ResultDataModel { success = false, errorMessage = "Key is null!", returnRunno = "" });
-                    qExe.Parameters.AddWithValue("@PreNameRunno", id);
+                    qExe.Parameters.AddWithValue("@PreNameID", id);
                     qExe.ExecuteNonQuery();
                     conn.CloseConnection();
                     return Json(new ResultDataModel { success = true, errorMessage = "", returnRunno = "" });
@@ -123,14 +146,22 @@ namespace DonateDataController.Controllers
             {
                 MySqlCommand qExe = new MySqlCommand();
                 qExe.Connection = conn.connection;
-                SQLString = @"select PreNameRunno, PreName from prename order by PreNameRunno";
+                SQLString = @"select * from prename order by PreNameID";
                 qExe.CommandText = SQLString;
                 MySqlDataReader dataReader = qExe.ExecuteReader();
                 while (dataReader.Read())
                 {
                     PrenameModel detail = new PrenameModel();
-                    detail.PreNameRunno = int.Parse(dataReader["PreNameRunno"].ToString());
+                    detail.PreNameID = dataReader["PreNameID"].ToString();
                     detail.PreName = dataReader["PreName"].ToString();
+                    detail.PersonFlag = dataReader["PersonFlag"].ToString();
+                    detail.CorporateFlag = dataReader["CorporateFlag"].ToString();
+                    detail.Blank1 = dataReader["Blank1"].ToString();
+                    detail.Blank2 = dataReader["Blank2"].ToString();
+                    detail.Blank3 = dataReader["Blank3"].ToString();
+                    detail.Blank4 = dataReader["Blank4"].ToString();
+                    detail.Blank5 = dataReader["Blank5"].ToString();
+                    detail.Blank6 = dataReader["Blank6"].ToString();
                     result.Add(detail);
                 }
                 return Json(result);
@@ -151,15 +182,23 @@ namespace DonateDataController.Controllers
             {
                 MySqlCommand qExe = new MySqlCommand();
                 qExe.Connection = conn.connection;
-                SQLString = @"select PreNameRunno, PreName from prename where PreNameRunno = @PreNameRunno";
+                SQLString = @"select * from prename where PreNameID = @PreNameID";
                 qExe.CommandText = SQLString;
                 qExe.Parameters.AddWithValue("@PreNameRunno", id);
                 MySqlDataReader dataReader = qExe.ExecuteReader();
                 while (dataReader.Read())
                 {
                     PrenameModel detail = new PrenameModel();
-                    detail.PreNameRunno = int.Parse(dataReader["PreNameRunno"].ToString());
+                    detail.PreNameID = dataReader["PreNameID"].ToString();
                     detail.PreName = dataReader["PreName"].ToString();
+                    detail.PersonFlag = dataReader["PersonFlag"].ToString();
+                    detail.CorporateFlag = dataReader["CorporateFlag"].ToString();
+                    detail.Blank1 = dataReader["Blank1"].ToString();
+                    detail.Blank2 = dataReader["Blank2"].ToString();
+                    detail.Blank3 = dataReader["Blank3"].ToString();
+                    detail.Blank4 = dataReader["Blank4"].ToString();
+                    detail.Blank5 = dataReader["Blank5"].ToString();
+                    detail.Blank6 = dataReader["Blank6"].ToString();
                     result = detail;
                 }
                 return Json(result);

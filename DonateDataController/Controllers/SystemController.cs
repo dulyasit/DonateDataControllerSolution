@@ -72,9 +72,6 @@ namespace DonateDataController.Controllers
                     });
                     }
                     return Json(result);
-                    /*      public string PartyAddr1 { get; set; }
-                            public string PartyAddr2 { get; set; }                            
-                            */
                 }
                 catch (Exception e)
                 {
@@ -90,6 +87,7 @@ namespace DonateDataController.Controllers
         [HttpGet]
         public IHttpActionResult GetMasterDatabyID(string id)
         {
+            UtilLibs uLibs = new UtilLibs();
             MasterData result = new MasterData();
             DBConnector.DBConnector conn = new DBConnector.DBConnector();
             string SQLString;
@@ -118,7 +116,27 @@ namespace DonateDataController.Controllers
                             Zipcode = dataReader["zipcode"].ToString(),
                             Telephone = dataReader["telephone"].ToString(),
                             Slogan = dataReader["Slogan"].ToString(),
-                            TaxID = dataReader["TaxID"].ToString()
+                            TaxID = dataReader["TaxID"].ToString(),
+                            Blank1 = dataReader["Blank1"].ToString(),
+                            Blank2 = dataReader["Blank2"].ToString(),
+                            Blank3 = dataReader["Blank3"].ToString(),
+                            Blank4 = dataReader["Blank4"].ToString(),
+                            Blank5 = dataReader["Blank5"].ToString(),
+                            Blank6 = dataReader["Blank6"].ToString(),
+                            Fax = dataReader["Fax"].ToString(),
+                            PartyNameLocation = dataReader["PartyNameLocation"].ToString(),
+                            RegisterNo = dataReader["RegisterNo"].ToString(),
+                            CorporateNo = dataReader["CorporateNo"].ToString(),
+                            CitizenID = dataReader["CitizenID"].ToString(),
+                            PartyAddr1 = uLibs.GetAddrRow1(dataReader["HouseNumber"].ToString(),
+                                                           dataReader["Moo"].ToString(),
+                                                           dataReader["Building"].ToString(),
+                                                           dataReader["Soi"].ToString(),
+                                                           dataReader["Road"].ToString()),
+                            PartyAddr2 = uLibs.GetAddrRow2(dataReader["Tambon"].ToString(),
+                                                           dataReader["Amphur"].ToString(),
+                                                           dataReader["Province"].ToString(),
+                                                           dataReader["Zipcode"].ToString())
                         };
                     }
                     return Json(result);
@@ -144,9 +162,12 @@ namespace DonateDataController.Controllers
             {
                 try
                 {
-                    SQLString = @"UPDATE masterdata SET partyname = @partyname, housenumber = @housenumber, soi = @soi,
-                              road = @road, moo = @moo, building = @building, tambon = @tambon, amphur = @amphur,
-                              province = @province, zipcode = @zipcode, telephone = @telephone, Slogan = @Slogan, TaxID = @TaxID";
+                    SQLString = @"UPDATE masterdata SET PartyName = @PartyName, HouseNumber = @HouseNumber, Soi = @Soi,
+                                  Road = @Road, Moo = @Moo, Building = @Building, Tambon = @Tambon, Amphur = @Amphur,
+                                  Province = @Province, Zipcode = @Zipcode, Telephone = @Telephone, Slogan = @Slogan,
+                                  TaxID = @TaxID, RegisterNo = @RegisterNo, CorporateNo = @CorporateNo, CitizenID = @CitizenID,
+                                  PartyNameLocation = @PartyNameLocation, Fax = @Fax, Blank1 = @Blank1, Blank2 = @Blank2,
+                                  Blank3 = @Blank3, Blank4 = @Blank4, Blank5 = @Blank5, Blank6 = @Blank6";
                     MySqlCommand qExe = new MySqlCommand
                     {
                         Connection = conn.connection,
@@ -165,6 +186,18 @@ namespace DonateDataController.Controllers
                     qExe.Parameters.AddWithValue("@telephone", item.Telephone);
                     qExe.Parameters.AddWithValue("@Slogan", item.Slogan);
                     qExe.Parameters.AddWithValue("@TaxID", item.TaxID);
+                    qExe.Parameters.AddWithValue("@RegisterNo", item.RegisterNo);
+                    qExe.Parameters.AddWithValue("@CorporateNo", item.CorporateNo);
+                    qExe.Parameters.AddWithValue("@CitizenID", item.CitizenID);
+                    qExe.Parameters.AddWithValue("@PartyNameLocation", item.PartyNameLocation);
+                    qExe.Parameters.AddWithValue("@Fax", item.Fax);
+                    qExe.Parameters.AddWithValue("@Blank1", item.Blank1);
+                    qExe.Parameters.AddWithValue("@Blank2", item.Blank2);
+                    qExe.Parameters.AddWithValue("@Blank3", item.Blank3);
+                    qExe.Parameters.AddWithValue("@Blank4", item.Blank4);
+                    qExe.Parameters.AddWithValue("@Blank5", item.Blank5);
+                    qExe.Parameters.AddWithValue("@Blank6", item.Blank6);
+                    
                     qExe.ExecuteNonQuery();
                     return Json(new ResultDataModel { success = true, errorMessage = "", returnRunno = "" });
                 }
