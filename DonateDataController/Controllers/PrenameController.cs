@@ -44,9 +44,8 @@ namespace DonateDataController.Controllers
                     qExe.Parameters.AddWithValue("@Blank5", item.Blank5);
                     qExe.Parameters.AddWithValue("@Blank6", item.Blank6);
                     qExe.ExecuteNonQuery();
-                    long returnid = qExe.LastInsertedId;
                     conn.CloseConnection();
-                    return Json(new ResultDataModel { success = true, errorMessage = "", returnRunno = returnid.ToString() });
+                    return Json(new ResultDataModel { success = true, errorMessage = "", returnRunno = item.PreNameID });
                 }
                 catch (Exception e)
                 {
